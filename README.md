@@ -103,7 +103,7 @@ npm install
 ### 3. 환경변수 설정
 `.env` 파일을 생성하고 다음 내용을 추가하세요:
 ```env
-COOKIE_SECRET=your_cookie_secret_here
+COOKIE_SECRET=auction
 NODE_ENV=development
 PORT=8010
 ```
