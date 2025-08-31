@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="max-w-md mx-auto">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-900">👋 회원가입</h2>
+        <p class="mt-1 text-sm text-gray-600">hancom 경매 시스템에 오신 것을 환영합니다</p>
+      </div>
+      
+      <form action="/auth/join" id="join-form" method="post" class="p-6 space-y-6">
+        <div>
+          <label for="join-email" class="block text-sm font-medium text-gray-700 mb-2">이메일</label>
+          <input type="email" 
+                 id="join-email" 
+                 name="email" 
+                 required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                 placeholder="your@email.com">
+        </div>
+        
+        <div>
+          <label for="join-nick" class="block text-sm font-medium text-gray-700 mb-2">닉네임</label>
+          <input type="text" 
+                 id="join-nick" 
+                 name="nick" 
+                 required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                 placeholder="사용할 닉네임을 입력하세요">
+        </div>
+        
+        <div>
+          <label for="join-password" class="block text-sm font-medium text-gray-700 mb-2">비밀번호</label>
+          <input type="password" 
+                 id="join-password" 
+                 name="password" 
+                 required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                 placeholder="안전한 비밀번호를 입력하세요">
+        </div>
+        
+        <div>
+          <label for="join-money" class="block text-sm font-medium text-gray-700 mb-2">보유자산</label>
+          <div class="relative">
+            <input type="number" 
+                   id="join-money" 
+                   name="money" 
+                   required
+                   min="0"
+                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                   placeholder="0">
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <span class="text-gray-500 text-sm">원</span>
+            </div>
+          </div>
+          <p class="mt-1 text-xs text-gray-500">경매 참여를 위한 초기 자산을 설정하세요</p>
+        </div>
+        
+        <button id="join-btn" 
+                type="submit" 
+                class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          🚀 회원가입 완료
+        </button>
+        
+        <div class="text-center">
+          <p class="text-sm text-gray-600">
+            이미 계정이 있으신가요? 
+            <a href="/" class="text-blue-600 hover:text-blue-800 font-medium">로그인하기</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    window.onload = () => {
+      if (new URL(location.href).searchParams.get('error')) {
+        alert(new URL(location.href).searchParams.get('error'));
+      }
+    };
+  </script>
+{% endblock %}
