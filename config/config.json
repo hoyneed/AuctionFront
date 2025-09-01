@@ -1,9 +1,9 @@
 {
-  "development": {
-    "username": "hoyneed",
-    "password": "15483542",
-    "database": "auction",
-    "host": "localhost",
-    "dialect": "mysql"
-  }
+    "development": {
+        "username": "hoyneed",
+        "password": "15483542",
+        "database": "auction",
+        "host": "3.35.177.154",
+        "dialect": "mysql"
+    }
 }

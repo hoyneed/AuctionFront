@@ -1,282 +1,367 @@
-{% extends 'layout.html' %}
-
-{% block good %}
-  <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+{% extends 'layout.html' %} {% block good %}
+<div class="bg-white rounded-lg shadow-lg p-6 mb-6">
     <div class="text-center">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">{{good.name}}</h2>
-      <div class="space-y-2 text-sm text-gray-600">
-        <div>등록자: <span class="font-semibold text-blue-600">{{good.Owner.nick}}</span></div>
-        <div>시작가: <span class="font-bold text-green-600 text-lg">{{good.price}}원</span></div>
-      </div>
-      <div class="mt-4">
-        <div class="text-sm text-gray-500 mb-2">남은 시간</div>
-        <div id="time" data-start="{{good.createdAt}}" 
-             class="text-2xl font-mono font-bold text-red-600 bg-red-100 px-4 py-2 rounded-lg">
-          --:--:--
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">{{good.name}}</h2>
+        <div class="space-y-2 text-sm text-gray-600">
+            <div>
+                등록자:
+                <span class="font-semibold text-blue-600"
+                    >{{good.Owner.nick}}</span
+                >
+            </div>
+            <div>
+                시작가:
+                <span class="font-bold text-green-600 text-lg"
+                    >{{good.price}}원</span
+                >
+            </div>
         </div>
-      </div>
+        <div class="mt-4">
+            <div class="text-sm text-gray-500 mb-2">남은 시간</div>
+            <div
+                id="time"
+                data-start="{{good.createdAt}}"
+                class="text-2xl font-mono font-bold text-red-600 bg-red-100 px-4 py-2 rounded-lg"
+            >
+                --:--:--
+            </div>
+        </div>
     </div>
-    
-    <div class="mt-6">
-      <img id="good-img" 
-           class="w-full h-64 object-cover rounded-lg border border-gray-200 shadow-md" 
-           src="/img/{{good.img}}" 
-           onerror="this.src='/default-image.svg'; this.onerror=null;" 
-           alt="{{good.name}}">
-    </div>
-  </div>
-{% endblock %}
 
-{% block content %}
-  <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-    <div class="px-6 py-4 border-b border-gray-200">
-      <h3 class="text-lg font-semibold text-gray-900">💰 입찰 현황</h3>
-      <p class="mt-1 text-sm text-gray-600">현재 입찰 상황을 실시간으로 확인하세요</p>
+    <div class="mt-6">
+        <img
+            id="good-img"
+            class="w-full h-64 object-cover rounded-lg border border-gray-200 shadow-md"
+            src="/img/{{good.img}}"
+            onerror="this.src='/default-image.svg'; this.onerror=null;"
+            alt="{{good.name}}"
+        />
     </div>
-    
+</div>
+{% endblock %} {% block content %}
+<div class="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-900">💰 입찰 현황</h3>
+        <p class="mt-1 text-sm text-gray-600">
+            현재 입찰 상황을 실시간으로 확인하세요
+        </p>
+    </div>
+
     <div class="p-6">
-      <div id="bid" class="space-y-3 mb-6">
-        {% for bid in auction %}
-          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                  <span class="text-white text-sm font-bold">{{bid.User.nick|first|upper}}</span>
+        <div id="bid" class="space-y-3 mb-6">
+            {% for bid in auction %}
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div
+                            class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center"
+                        >
+                            <span class="text-white text-sm font-bold"
+                                >{{bid.User.nick|first|upper}}</span
+                            >
+                        </div>
+                        <div>
+                            <span class="font-semibold text-blue-900"
+                                >{{bid.User.nick}}님</span
+                            >
+                            <span class="text-gray-600">이</span>
+                            <strong class="text-green-600 text-lg"
+                                >{{bid.bid}}원</strong
+                            >
+                            <span class="text-gray-600"
+                                >에 입찰하셨습니다.</span
+                            >
+                            {% if bid.msg %}
+                            <span class="text-sm text-gray-500"
+                                >({{bid.msg}})</span
+                            >
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-400">
+                        <span class="bid-time" data-time="{{bid.createdAt}}"
+                            >--:--</span
+                        >
+                    </div>
+                </div>
+            </div>
+            {% endfor %} {% if auction|length == 0 %}
+            <div class="text-center py-8 text-gray-500">
+                <svg
+                    class="mx-auto h-12 w-12 text-gray-300"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                    ></path>
+                </svg>
+                <p class="mt-2">
+                    아직 입찰이 없습니다. 첫 번째 입찰자가 되어보세요!
+                </p>
+            </div>
+            {% endif %}
+        </div>
+
+        <form id="bid-form" class="bg-gray-50 rounded-lg p-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">
+                🎯 입찰하기
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label
+                        for="bid"
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >입찰가</label
+                    >
+                    <div class="relative">
+                        <input
+                            type="number"
+                            name="bid"
+                            id="bid"
+                            placeholder="입찰가를 입력하세요"
+                            required
+                            min="{{good.price}}"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                        <div
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        >
+                            <span class="text-gray-500 text-sm">원</span>
+                        </div>
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500">
+                        최소 입찰가: {{good.price}}원
+                    </p>
                 </div>
                 <div>
-                  <span class="font-semibold text-blue-900">{{bid.User.nick}}님</span>
-                  <span class="text-gray-600">이</span>
-                  <strong class="text-green-600 text-lg">{{bid.bid}}원</strong>
-                  <span class="text-gray-600">에 입찰하셨습니다.</span>
-                  {% if bid.msg %}
-                    <span class="text-sm text-gray-500">({{bid.msg}})</span>
-                  {% endif %}
+                    <label
+                        for="msg"
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >메시지 (선택사항)</label
+                    >
+                    <input
+                        type="text"
+                        name="msg"
+                        id="msg"
+                        placeholder="입찰 메시지를 남겨보세요"
+                        maxlength="100"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    <p class="mt-1 text-xs text-gray-500">
+                        {{100 - (msg|length or 0)}}자 남음
+                    </p>
                 </div>
-              </div>
-              <div class="text-xs text-gray-400">
-                <span class="bid-time" data-time="{{bid.createdAt}}">--:--</span>
-              </div>
             </div>
-          </div>
-        {% endfor %}
-        
-        {% if auction|length == 0 %}
-          <div class="text-center py-8 text-gray-500">
-            <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-            </svg>
-            <p class="mt-2">아직 입찰이 없습니다. 첫 번째 입찰자가 되어보세요!</p>
-          </div>
-        {% endif %}
-      </div>
-      
-      <form id="bid-form" class="bg-gray-50 rounded-lg p-6">
-        <h4 class="text-lg font-semibold text-gray-900 mb-4">🎯 입찰하기</h4>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label for="bid" class="block text-sm font-medium text-gray-700 mb-2">입찰가</label>
-            <div class="relative">
-              <input type="number" 
-                     name="bid" 
-                     id="bid"
-                     placeholder="입찰가를 입력하세요" 
-                     required 
-                     min="{{good.price}}"
-                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                <span class="text-gray-500 text-sm">원</span>
-              </div>
-            </div>
-            <p class="mt-1 text-xs text-gray-500">최소 입찰가: {{good.price}}원</p>
-          </div>
-          <div>
-            <label for="msg" class="block text-sm font-medium text-gray-700 mb-2">메시지 (선택사항)</label>
-            <input type="text" 
-                   name="msg" 
-                   id="msg"
-                   placeholder="입찰 메시지를 남겨보세요" 
-                   maxlength="100"
-                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            <p class="mt-1 text-xs text-gray-500">{{100 - (msg|length or 0)}}자 남음</p>
-          </div>
-        </div>
-        <button type="submit" 
-                class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-          🚀 입찰하기
-        </button>
-      </form>
+            <button
+                type="submit"
+                class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+                🚀 입찰하기
+            </button>
+        </form>
     </div>
-  </div>
-  
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://unpkg.com/event-source-polyfill/src/eventsource.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
+</div>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/event-source-polyfill/src/eventsource.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
     document.querySelector('#bid-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const bidValue = e.target.bid.value;
-      const msgValue = e.target.msg.value;
-      
-      // 입력값 검증
-      if (parseInt(bidValue) < {{good.price}}) {
-        alert('입찰가는 시작가보다 높아야 합니다.');
-        return;
-      }
-      
-      axios.post('/good/{{good.id}}/bid', {
-        bid: bidValue,
-        msg: msgValue,
-      })
-        .then((response) => {
-          // 성공 시 폼 초기화
-          e.target.bid.value = '';
-          e.target.msg.value = '';
-          
-          // 성공 메시지 표시
-          const successDiv = document.createElement('div');
-          successDiv.className = 'bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4';
-          successDiv.textContent = '입찰이 성공적으로 등록되었습니다!';
-          document.querySelector('#bid-form').parentNode.insertBefore(successDiv, document.querySelector('#bid-form'));
-          
-          // 3초 후 메시지 제거
-          setTimeout(() => successDiv.remove(), 3000);
-        })
-        .catch((err) => {
-          console.error(err);
-          alert(err.response?.data || '입찰 중 오류가 발생했습니다.');
-        });
+        e.preventDefault();
+        const bidValue = e.target.bid.value;
+        const msgValue = e.target.msg.value;
+
+        // 입력값 검증
+        if (parseInt(bidValue) < good.price) {
+            alert('입찰가는 시작가보다 높아야 합니다.');
+            return;
+        }
+
+        axios
+            .post('/good/{{good.id}}/bid', {
+                bid: bidValue,
+                msg: msgValue,
+            })
+            .then((response) => {
+                // 성공 시 폼 초기화
+                e.target.bid.value = '';
+                e.target.msg.value = '';
+
+                // 성공 메시지 표시
+                const successDiv = document.createElement('div');
+                successDiv.className =
+                    'bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4';
+                successDiv.textContent = '입찰이 성공적으로 등록되었습니다!';
+                document
+                    .querySelector('#bid-form')
+                    .parentNode.insertBefore(
+                        successDiv,
+                        document.querySelector('#bid-form')
+                    );
+
+                // 3초 후 메시지 제거
+                setTimeout(() => successDiv.remove(), 3000);
+            })
+            .catch((err) => {
+                console.error(err);
+                alert(err.response?.data || '입찰 중 오류가 발생했습니다.');
+            });
     });
-    
-    const es = new EventSource("/sse");
+
+    const es = new EventSource('/sse');
     const time = document.querySelector('#time');
-    
+
     // 경매 종료 시간 계산 함수
     function calculateTimeRemaining() {
-      const startTime = new Date(time.dataset.start);
-      const endTime = new Date(startTime);
-      endTime.setDate(endTime.getDate() + 1); // 24시간 후
-      
-      const now = new Date();
-      const remaining = endTime - now;
-      
-      if (remaining <= 0) {
-        // 경매 종료
-        time.textContent = '00:00:00';
-        time.classList.remove('text-red-600', 'bg-red-100');
-        time.classList.add('text-gray-600', 'bg-gray-100');
-        
-        // 입찰 폼 비활성화
-        const bidForm = document.querySelector('#bid-form');
-        if (bidForm) {
-          bidForm.style.opacity = '0.5';
-          bidForm.style.pointerEvents = 'none';
-          
-          // 경매 종료 메시지 표시
-          const endMessage = document.createElement('div');
-          endMessage.className = 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4 text-center font-bold';
-          endMessage.textContent = '⏰ 경매가 종료되었습니다!';
-          bidForm.parentNode.insertBefore(endMessage, bidForm);
+        const startTime = new Date(time.dataset.start);
+        const endTime = new Date(startTime);
+        endTime.setDate(endTime.getDate() + 1); // 24시간 후
+
+        const now = new Date();
+        const remaining = endTime - now;
+
+        if (remaining <= 0) {
+            // 경매 종료
+            time.textContent = '00:00:00';
+            time.classList.remove('text-red-600', 'bg-red-100');
+            time.classList.add('text-gray-600', 'bg-gray-100');
+
+            // 입찰 폼 비활성화
+            const bidForm = document.querySelector('#bid-form');
+            if (bidForm) {
+                bidForm.style.opacity = '0.5';
+                bidForm.style.pointerEvents = 'none';
+
+                // 경매 종료 메시지 표시
+                const endMessage = document.createElement('div');
+                endMessage.className =
+                    'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4 text-center font-bold';
+                endMessage.textContent = '⏰ 경매가 종료되었습니다!';
+                bidForm.parentNode.insertBefore(endMessage, bidForm);
+            }
+            return;
         }
-        return;
-      }
-      
-      // 남은 시간 계산
-      const hours = Math.floor(remaining / (1000 * 60 * 60));
-      const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-      
-      time.textContent = 
-        ('0' + hours).slice(-2) + ':' + 
-        ('0' + minutes).slice(-2) + ':' + 
-        ('0' + seconds).slice(-2);
-      
-      // 시간에 따른 색상 변경
-      if (remaining < 60000) { // 1분 미만
-        time.classList.remove('text-red-600', 'bg-red-100');
-        time.classList.add('text-red-800', 'bg-red-200');
-      } else if (remaining < 300000) { // 5분 미만
-        time.classList.remove('text-red-600', 'bg-red-100');
-        time.classList.add('text-orange-600', 'bg-orange-100');
-      } else {
-        time.classList.remove('text-red-800', 'bg-red-200', 'text-orange-600', 'bg-orange-100');
-        time.classList.add('text-red-600', 'bg-red-100');
-      }
+
+        // 남은 시간 계산
+        const hours = Math.floor(remaining / (1000 * 60 * 60));
+        const minutes = Math.floor(
+            (remaining % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+        time.textContent =
+            ('0' + hours).slice(-2) +
+            ':' +
+            ('0' + minutes).slice(-2) +
+            ':' +
+            ('0' + seconds).slice(-2);
+
+        // 시간에 따른 색상 변경
+        if (remaining < 60000) {
+            // 1분 미만
+            time.classList.remove('text-red-600', 'bg-red-100');
+            time.classList.add('text-red-800', 'bg-red-200');
+        } else if (remaining < 300000) {
+            // 5분 미만
+            time.classList.remove('text-red-600', 'bg-red-100');
+            time.classList.add('text-orange-600', 'bg-orange-100');
+        } else {
+            time.classList.remove(
+                'text-red-800',
+                'bg-red-200',
+                'text-orange-600',
+                'bg-orange-100'
+            );
+            time.classList.add('text-red-600', 'bg-red-100');
+        }
     }
-    
+
     // 초기 시간 계산
     calculateTimeRemaining();
-    
+
     // SSE로 서버 시간 동기화하면서 시간 업데이트
     es.onmessage = (e) => {
-      calculateTimeRemaining();
+        calculateTimeRemaining();
     };
-    
+
     // 1초마다 시간 업데이트 (더 정확한 카운트다운)
     setInterval(calculateTimeRemaining, 1000);
-    
+
     const socket = io.connect('http://localhost:8010', {
-      path: '/socket.io'
+        path: '/socket.io',
     });
-    
+
     socket.on('bid', (data) => {
-      const bidContainer = document.querySelector('#bid');
-      const div = document.createElement('div');
-      div.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 animate-pulse';
-      
-      div.innerHTML = `
+        const bidContainer = document.querySelector('#bid');
+        const div = document.createElement('div');
+        div.className =
+            'bg-blue-50 border border-blue-200 rounded-lg p-4 animate-pulse';
+
+        div.innerHTML = `
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-              <span class="text-white text-sm font-bold">${data.nick.charAt(0).toUpperCase()}</span>
+              <span class="text-white text-sm font-bold">${data.nick
+                  .charAt(0)
+                  .toUpperCase()}</span>
             </div>
             <div>
               <span class="font-semibold text-blue-900">${data.nick}님</span>
               <span class="text-gray-600">이</span>
               <strong class="text-green-600 text-lg">${data.bid}원</strong>
               <span class="text-gray-600">에 입찰하셨습니다.</span>
-              ${data.msg ? `<span class="text-sm text-gray-500">(${data.msg})</span>` : ''}
+              ${
+                  data.msg
+                      ? `<span class="text-sm text-gray-500">(${data.msg})</span>`
+                      : ''
+              }
             </div>
           </div>
           <div class="text-xs text-gray-400">방금 전</div>
         </div>
       `;
-      
-      bidContainer.insertBefore(div, bidContainer.firstChild);
-      
-      // 애니메이션 제거
-      setTimeout(() => div.classList.remove('animate-pulse'), 1000);
+
+        bidContainer.insertBefore(div, bidContainer.firstChild);
+
+        // 애니메이션 제거
+        setTimeout(() => div.classList.remove('animate-pulse'), 1000);
     });
-    
+
     // 메시지 길이 실시간 업데이트
-    document.querySelector('#msg').addEventListener('input', function() {
-      const remaining = 100 - this.value.length;
-      this.nextElementSibling.textContent = `${remaining}자 남음`;
+    document.querySelector('#msg').addEventListener('input', function () {
+        const remaining = 100 - this.value.length;
+        this.nextElementSibling.textContent = `${remaining}자 남음`;
     });
-    
+
     // 입찰 시간 포맷팅 함수
     function formatBidTime(dateString) {
-      const date = new Date(dateString);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      
-      return `${year}-${month}-${day} ${hours}:${minutes}`;
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
     }
-    
+
     // 페이지 로드 시 입찰 시간 포맷팅
-    document.querySelectorAll('.bid-time').forEach(span => {
-      const timeString = span.dataset.time;
-      if (timeString) {
-        span.textContent = formatBidTime(timeString);
-      }
+    document.querySelectorAll('.bid-time').forEach((span) => {
+        const timeString = span.dataset.time;
+        if (timeString) {
+            span.textContent = formatBidTime(timeString);
+        }
     });
-    
+
     window.onload = () => {
-      if (new URL(location.href).searchParams.get('auctionError')) {
-        alert(new URL(location.href).searchParams.get('auctionError'));
-      }
+        if (new URL(location.href).searchParams.get('auctionError')) {
+            alert(new URL(location.href).searchParams.get('auctionError'));
+        }
     };
-  </script>
+</script>
 {% endblock %}
